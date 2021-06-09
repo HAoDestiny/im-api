@@ -1,0 +1,56 @@
+# redis配置
+---
+spring:
+  profiles: dev
+  # redis 配置
+  redis:
+    # 地址
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: redis@TLink
+    # 连接超时时间
+    timeout: 10s
+    # 是否开启ssl
+    ssl: false
+
+
+---
+spring:
+  profiles: test
+  # redis 配置
+  redis:
+    # 地址
+    host: host.docker.internal
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: redis@TLink
+    # 连接超时时间
+    timeout: 10s
+    # 是否开启ssl
+    ssl: false
+
+
+---
+spring:
+  profiles: prod
+  # redis 配置
+  redis:
+    # 地址
+    host: 172.20.0.2
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: redis@TLink
+    # 连接超时时间
+    timeout: 10s
+    # 是否开启ssl
+    ssl: false

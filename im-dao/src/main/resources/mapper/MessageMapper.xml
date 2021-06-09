@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tlink.dao.mapper.MessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.tlink.mode.message.MessageVo">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="action" column="action" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="extra" column="extra" jdbcType="VARCHAR"/>
+            <result property="format" column="format" jdbcType="VARCHAR"/>
+            <result property="receiver" column="receiver" jdbcType="VARCHAR"/>
+            <result property="sender" column="sender" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="VARCHAR"/>
+            <result property="timestamp" column="timestamp" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        select id,action,content,
+        extra,format,receiver,
+        sender,state,timestamp,
+        title from t_lvxin_message
+    </sql>
+
+    <select id="selectConversationByAccount" resultMap="BaseResultMap">
+        select gr.sender, gr.receiver from (
+        select sender, receiver, timestamp from t_lvxin_message where sender = #{account} and timestamp >= #{startTime}
+        UNION
+        select sender, receiver, timestamp from t_lvxin_message where receiver = #{account} and timestamp >= #{startTime}
+        ) as gr GROUP BY gr.sender, gr.receiver ORDER BY gr.timestamp DESC
+    </select>
+
+    <select id="selectMessageListBySenderAndReceiver" resultMap="BaseResultMap">
+        <include refid="Base_Column_List"/> where sender = #{sender} and receiver = #{receiver} and timestamp >= #{startTime}
+        UNION ALL
+        <include refid="Base_Column_List"/> where sender =  #{receiver} and receiver = #{sender} and timestamp >= #{startTime}
+    </select>
+
+    <select id="selectMessageListByReceiverAndState" resultMap="BaseResultMap">
+        <include refid="Base_Column_List"/> where receiver = #{receiver} and state = ${state} and timestamp >= #{startTime}
+         order by id asc
+    </select>
+</mapper>

@@ -1,0 +1,155 @@
+# 注册
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka@127.0.0.1:8761/eureka/
+
+
+# 开发环境配置
+server:
+  # 服务器的HTTP端口
+  port: 7900
+  servlet:
+    # 应用的访问路径
+    context-path: /api
+  # undertow 配置
+  undertow:
+    # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
+    max-http-post-size: -1
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 512
+    # 是否分配的直接内存
+    direct-buffers: true
+    threads:
+      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+      io: 8
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+      worker: 256
+#  # tomcat 配置
+#  tomcat:
+#    # tomcat的URI编码
+#    uri-encoding: UTF-8
+#    # tomcat最大线程数，默认为200
+#    max-threads: 500
+#    # Tomcat启动初始化的线程数，默认值25
+#    min-spare-threads: 30
+
+# 日志配置
+logging:
+  level:
+    dao: debug
+    com.tlink: debug
+    org.springframework: info
+  config: classpath:logback-spring.xml
+
+# Spring配置
+spring:
+  # 捕获404异常
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  # 资源信息
+#  messages:
+    # 国际化资源文件路径
+#    basename: i18n/messages
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 20MB
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+# MyBatisPlus配置
+# https://baomidou.com/config/
+mybatis-plus:
+  mapperPackage: com.tlink.**.mapper
+  # 对应的 XML 文件位置
+  mapperLocations: classpath*:mapper/**/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.tlink.**.domain
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      field-strategy: NOT_EMPTY
+      # 逻辑删除配置
+      # 逻辑删除全局值（1表示已删除，Mybatis Plus的默认配置）
+      logic-delete-value: 1
+      # 逻辑未删除全局值（0表示未删除，Mybatis Plus的默认配置）
+      logic-not-delete-value: 0
+    configuration:
+      # 开启sql语句打印
+#      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+      # 是否开启自动驼峰命名规则
+      map-underscore-to-camel-case: true
+      # 开启Mybatis二级缓存
+      cache-enabled: false
+
+# Swagger配置
+swagger:
+  # 是否开启swagger
+  enabled: true
+  # 请求前缀
+  pathMapping: /dev-api
+  # 标题
+  title: '标题：TLink_IM_API_接口文档'
+  # 描述
+  description: '描述：没空写...'
+  # 版本
+  version: '版本号: ${ruoyi-vue-plus.version}'
+  # 作者信息
+  contact:
+    name: TLink
+    email: TLink@163.com
+    url: https://www.baidu.com
+
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
+
+# im配置
+im:
+  url: http://127.0.0.1:9090
+  token:
+  # 令牌自定义标识
+    header: Authorization
+
+## 全局线程池相关配置
+#thread-pool:
+#  # 是否开启线程池
+#  enabled: false
+#  # 核心线程池大小
+#  corePoolSize: 8
+#  # 最大可创建的线程数
+#  maxPoolSize: 16
+#  # 队列最大长度
+#  queueCapacity: 128
+#  # 线程池维护线程所允许的空闲时间
+#  keepAliveSeconds: 300
+#  # 线程池对拒绝任务(无线程可用)的处理策略
+#  # CallerRunsPolicy 等待
+#  # DiscardOldestPolicy 放弃最旧的
+#  # DiscardPolicy 丢弃
+#  # AbortPolicy 中止
+#  rejectedExecutionHandler: CallerRunsPolicy
+
