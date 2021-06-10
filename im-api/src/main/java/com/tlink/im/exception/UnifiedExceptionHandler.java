@@ -6,6 +6,7 @@ import cn.hutool.log.Log;
 import com.tlink.common.core.domain.R;
 import com.tlink.common.core.exception.BaseException;
 import com.tlink.common.core.exception.BusinessException;
+import com.tlink.im.BaseController;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 
 @RestControllerAdvice
-public class UnifiedExceptionHandler {
+public class UnifiedExceptionHandler extends BaseController {
 
     private static final Log log = Log.get(UnifiedExceptionHandler.class);
 
@@ -27,37 +28,39 @@ public class UnifiedExceptionHandler {
      * 基础异常
      */
     @ExceptionHandler(BaseException.class)
-    public R<?> baseException(BaseException e) {
-        return R.fail(e.getDefaultMessage());
+    public String baseException(BaseException e) {
+        return response(R.fail(e.getDefaultMessage()));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public R<?> handlerNoFoundException(Exception e) {
+    public String handlerNoFoundException(Exception e) {
         log.error(e.getMessage(), e);
-        return R.fail(HttpStatus.HTTP_NOT_FOUND, "path is not found");
+        return response(R.fail(HttpStatus.HTTP_NOT_FOUND, "path is not found"));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public R<?> handlerHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public String handlerHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         log.error(e.getMessage(), e);
-        return R.fail(HttpStatus.HTTP_BAD_METHOD, StrUtil.format("not support '{}' request", e.getMethod()));
+        return response(
+                R.fail(HttpStatus.HTTP_BAD_METHOD, StrUtil.format("not support '{}' request", e.getMethod()))
+        );
     }
 
     /**
      * 业务异常
      */
     @ExceptionHandler(BusinessException.class)
-    public R<?> businessException(BusinessException e) {
+    public String businessException(BusinessException e) {
         if (null == e.getCode()) {
-            return R.fail(e.getMessage());
+            return response(R.fail(e.getMessage()));
         }
-        return R.fail(e.getCode(), e.getMessage());
+        return response(R.fail(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public R<?> handleException(Exception e) {
+    public String handleException(Exception e) {
         log.error(e.getMessage(), e);
-        return R.fail("服务异常");
+        return response(R.fail("服务异常"));
     }
 
 }

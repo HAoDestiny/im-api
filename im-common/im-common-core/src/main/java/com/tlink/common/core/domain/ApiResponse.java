@@ -11,7 +11,10 @@ public enum  ApiResponse {
 
     PARAM_FAIL("30001", "参数错误"),
     NOT_FOUND("30002", "记录不存在"),
-    ACTION_FAIL("30003", "操作失败")
+    ACTION_FAIL("30003", "操作失败"),
+
+
+    ACCOUNT_EXISTED("40001", "用户已存在")
     ;
 
     private String code;

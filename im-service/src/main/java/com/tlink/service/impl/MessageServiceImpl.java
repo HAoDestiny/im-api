@@ -2,7 +2,6 @@ package com.tlink.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -16,7 +15,7 @@ import com.tlink.common.core.domain.R;
 import com.tlink.dao.domain.Message;
 import com.tlink.dao.mapper.MessageMapper;
 import com.tlink.mode.IMBaseResponse;
-import com.tlink.mode.UserVo;
+import com.tlink.mode.user.UserVo;
 import com.tlink.mode.message.MessageConversationVo;
 import com.tlink.mode.message.MessageVo;
 import com.tlink.service.IMessageService;

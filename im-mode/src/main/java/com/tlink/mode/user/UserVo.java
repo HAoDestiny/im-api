@@ -1,4 +1,4 @@
-package com.tlink.mode;
+package com.tlink.mode.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +23,9 @@ public class UserVo {
     private String email;
     private String code;
     private String gender;
-    private int grade;
+    private Integer grade;
+    private String feature;
+    private String motto;
     /**
      * 用户状态 0-正常 1-禁用
      */

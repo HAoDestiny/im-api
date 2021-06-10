@@ -1,4 +1,4 @@
-package com.tlink.service;
+package com.tlink.service.client;
 
 
 import cn.hutool.core.util.StrUtil;
